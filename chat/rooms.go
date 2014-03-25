@@ -4,16 +4,23 @@ import (
 	"errors"
 )
 
+var (
+	NickAlreadyInUse = errors.New("Nickname is already in use")
+	RoomIsFull       = errors.New("Room is full")
+)
+
 // Room represents a chatroom.
 type Room struct {
 	messages chan Message
 	buddies  map[string]*Buddy
+	name     string
 }
 
-func newRoom() (r *Room) {
+func newRoom(name string) (r *Room) {
 	r = new(Room)
 	r.messages = make(chan Message)
 	r.buddies = make(map[string]*Buddy)
+	r.name = name
 	go r.broadcast()
 	return
 }
@@ -26,6 +33,7 @@ func (r *Room) leave(nick string) {
 	delete(r.buddies, nick)
 	if len(r.buddies) == 0 {
 		close(r.messages)
+		delete(rooms, r.name)
 	} else {
 		r.messages <- Message{
 			Type: MsgLeave,
@@ -65,16 +73,16 @@ func InitRooms(room_limit int) {
 func Join(room, nick string) (*Buddy, *Room, error) {
 	r, ok := rooms[room]
 	if !ok {
-		r = newRoom()
+		r = newRoom(room)
 		rooms[room] = r
 	}
 
 	if _, there := r.buddies[nick]; there {
-		return nil, nil, errors.New("Nickname is already in use")
+		return nil, nil, NickAlreadyInUse
 	}
 
 	if len(r.buddies) >= perroom {
-		return nil, nil, errors.New("Room is full")
+		return nil, nil, RoomIsFull
 	}
 
 	r.messages <- Message{
