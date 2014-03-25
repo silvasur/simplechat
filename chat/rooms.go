@@ -4,45 +4,47 @@ import (
 	"errors"
 )
 
+// Room represents a chatroom.
 type Room struct {
-	Messages chan Message
-	Buddies  map[string]*Buddy
+	messages chan Message
+	buddies  map[string]*Buddy
 }
 
-func NewRoom() (r *Room) {
+func newRoom() (r *Room) {
 	r = new(Room)
-	r.Messages = make(chan Message)
-	r.Buddies = make(map[string]*Buddy)
-	go r.Broadcast()
+	r.messages = make(chan Message)
+	r.buddies = make(map[string]*Buddy)
+	go r.broadcast()
 	return
 }
 
-func (r *Room) Leave(nick string) {
-	if _, ok := r.Buddies[nick]; !ok {
+func (r *Room) leave(nick string) {
+	if _, ok := r.buddies[nick]; !ok {
 		return
 	}
 
-	delete(r.Buddies, nick)
-	if len(r.Buddies) == 0 {
-		close(r.Messages)
+	delete(r.buddies, nick)
+	if len(r.buddies) == 0 {
+		close(r.messages)
 	} else {
-		r.Messages <- Message{
+		r.messages <- Message{
 			Type: MsgLeave,
 			User: nick,
 		}
 	}
 }
 
-func (r *Room) Broadcast() {
-	for m := range r.Messages {
-		for _, buddy := range r.Buddies {
+func (r *Room) broadcast() {
+	for m := range r.messages {
+		for _, buddy := range r.buddies {
 			buddy.Push(m)
 		}
 	}
 }
 
+// ListBuddies returns a list of nicknames of the connected buddies.
 func (r *Room) ListBuddies() (buddies []string) {
-	for nick := range r.Buddies {
+	for nick := range r.buddies {
 		buddies = append(buddies, nick)
 	}
 	return
@@ -53,32 +55,34 @@ var (
 	perroom int
 )
 
+// InitRooms initializes the internal rooms variable. Use this, before calling Join.
 func InitRooms(room_limit int) {
 	rooms = make(map[string]*Room)
 	perroom = room_limit
 }
 
+// Join joins a buddy to a room. The room will be created, if it doesn't exist.
 func Join(room, nick string) (*Buddy, *Room, error) {
 	r, ok := rooms[room]
 	if !ok {
-		r = NewRoom()
+		r = newRoom()
 		rooms[room] = r
 	}
 
-	if _, there := r.Buddies[nick]; there {
+	if _, there := r.buddies[nick]; there {
 		return nil, nil, errors.New("Nickname is already in use")
 	}
 
-	if len(r.Buddies) >= perroom {
+	if len(r.buddies) >= perroom {
 		return nil, nil, errors.New("Room is full")
 	}
 
-	r.Messages <- Message{
+	r.messages <- Message{
 		Type: MsgJoin,
 		User: nick,
 	}
 
-	b := NewBuddy(nick, r)
-	r.Buddies[nick] = b
+	b := newBuddy(nick, r)
+	r.buddies[nick] = b
 	return b, r, nil
 }

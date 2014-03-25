@@ -4,13 +4,15 @@ import (
 	"time"
 )
 
+// Buddy represents a user that participates in a chat.
+// Read from the Receive channel to get incoming messages
 type Buddy struct {
 	Nick    string
 	Receive chan Message
 	room    *Room
 }
 
-func NewBuddy(nick string, room *Room) *Buddy {
+func newBuddy(nick string, room *Room) *Buddy {
 	return &Buddy{
 		Nick:    nick,
 		Receive: make(chan Message),
@@ -18,10 +20,12 @@ func NewBuddy(nick string, room *Room) *Buddy {
 	}
 }
 
+// Leave will remove the buddy from the room.
 func (b *Buddy) Leave() {
-	b.room.Leave(b.Nick)
+	b.room.leave(b.Nick)
 }
 
+// Push pushes a message to the buddies Receive channel
 func (b *Buddy) Push(msg Message) {
 	go func() {
 		select {
@@ -33,7 +37,7 @@ func (b *Buddy) Push(msg Message) {
 
 // Say sends a text as a chat message of this user to the connected room.
 func (b *Buddy) Say(text string) {
-	b.room.Messages <- Message{
+	b.room.messages <- Message{
 		Type: MsgChat,
 		User: b.Nick,
 		Text: text,
