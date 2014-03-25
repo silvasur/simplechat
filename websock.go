@@ -7,10 +7,18 @@ import (
 	"net/http"
 )
 
+type JoinResponse struct {
+	OK      bool     `json:"ok"`
+	Error   string   `json:"error,omitempty"`
+	Buddies []string `json:"buddies,omitempty"`
+}
+
 func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
-	room := vars["chatroom"]
+	roomname := vars["chatroom"]
 	websocket.Handler(func(ws *websocket.Conn) {
+		send := func(v interface{}) error { return websocket.JSON.Send(ws, v) }
+
 		defer ws.Close()
 
 		var nick string
@@ -18,12 +26,23 @@ func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		if err := Join(room, nick); err != nil {
-			// TODO: report error to client
+		buddy, room, err := Join(roomname, nick)
+		if err != nil {
+			send(JoinResponse{
+				OK:    false,
+				Error: err.Error(),
+			})
+			return
+		}
+		defer buddy.Leave()
+
+		if send(JoinResponse{
+			OK:      true,
+			Buddies: room.ListBuddies(),
+		}) != nil {
 			return
 		}
 
-		usermsgs := make(chan string)
 		go func() {
 			var s string
 			for {
@@ -31,9 +50,11 @@ func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 					return
 				}
 
-				if s != "" {
-					usermsgs <- s
+				if s == "" {
+					continue
 				}
+
+				// TODO: Broadcast messsage
 			}
 		}()
 	}).ServeHTTP(rw, req)

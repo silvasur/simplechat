@@ -40,6 +40,13 @@ func (r *Room) Broadcast() {
 	}
 }
 
+func (r *Room) ListBuddies() (buddies []string) {
+	for nick := range r.Buddies {
+		buddies = append(buddies, nick)
+	}
+	return
+}
+
 var rooms = make(map[string]Room)
 
 func Join(room, nick string) (*Buddy, *Room, error) {
