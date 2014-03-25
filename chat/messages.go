@@ -2,7 +2,6 @@ package chat
 
 import (
 	"encoding/json"
-	"errors"
 )
 
 // MsgType describes the purpose of a message
@@ -14,17 +13,21 @@ const (
 	MsgLeave
 )
 
-func (mt *MsgType) MarshalJSON() ([]byte, error) {
-	switch *mt {
+func (mt MsgType) String() string {
+	switch mt {
 	case MsgChat:
-		return json.Marshal("chat")
+		return "chat"
 	case MsgJoin:
-		return json.Marshal("join")
+		return "join"
 	case MsgLeave:
-		return json.Marshal("leave")
+		return "leave"
 	}
 
-	return nil, errors.New("Unknown message type")
+	return "???"
+}
+
+func (mt *MsgType) MarshalJSON() ([]byte, error) {
+	return json.Marshal(mt.String())
 }
 
 // Message represents a message that can be sent to a buddy. The Text field has no meaning, if Type != MsgChat.
