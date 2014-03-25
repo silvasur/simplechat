@@ -35,7 +35,7 @@ func (r *Room) Leave(nick string) {
 func (r *Room) Broadcast() {
 	for m := range r.Messages {
 		for _, buddy := range r.Buddies {
-			buddy.Receive <- m // TODO: What happens when this locks?
+			buddy.Push(m)
 		}
 	}
 }

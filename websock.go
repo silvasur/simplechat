@@ -3,7 +3,6 @@ package main
 import (
 	"code.google.com/p/go.net/websocket"
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
 )
 
@@ -54,8 +53,14 @@ func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 					continue
 				}
 
-				// TODO: Broadcast messsage
+				buddy.Say(s)
 			}
 		}()
+
+		for m := range buddy.Receive {
+			if send(m) != nil {
+				return
+			}
+		}
 	}).ServeHTTP(rw, req)
 }
