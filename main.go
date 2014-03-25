@@ -24,6 +24,8 @@ func main() {
 		log.Fatalln("flag perroom must not be 0")
 	}
 
+	PrepTemplates()
+
 	r := mux.NewRouter()
 	r.HandleFunc("/", Home)
 	r.PathPrefix("/static").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir(*staticpath))))
