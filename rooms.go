@@ -42,7 +42,7 @@ func (r *Room) Broadcast() {
 
 var rooms = make(map[string]Room)
 
-func Join(room, nick string) (*Buddy, error) {
+func Join(room, nick string) (*Buddy, *Room, error) {
 	r, ok := rooms[room]
 	if !ok {
 		r = NewRoom()
@@ -50,11 +50,11 @@ func Join(room, nick string) (*Buddy, error) {
 	}
 
 	if _, there := r.Buddies[nick]; there {
-		return nil, errors.New("Nickname is already in use")
+		return nil, room, errors.New("Nickname is already in use")
 	}
 
 	if len(r.Buddies) >= *perroom {
-		return nil, errors.New("Room is full")
+		return nil, room, errors.New("Room is full")
 	}
 
 	r.Messages <- Message{
