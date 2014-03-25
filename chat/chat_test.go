@@ -28,6 +28,15 @@ func TestJoining(t *testing.T) {
 		t.Error("r1 and r2 are not equal")
 	}
 
+	buddies := r1.ListBuddies()
+	seen := make(map[string]bool)
+	for _, b := range buddies {
+		seen[b] = true
+	}
+	if !seen["Foo"] || !seen["Bar"] {
+		t.Error("Foo or Bar missing in buddy list")
+	}
+
 	if _, _, err = Join("test", "Baz"); err != RoomIsFull {
 		t.Fatalf("Got error \"%s\", expected \"%s\"", err, RoomIsFull)
 	}
