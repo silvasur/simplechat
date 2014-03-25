@@ -45,12 +45,23 @@ func TestJoining(t *testing.T) {
 func TestLeaving(t *testing.T) {
 	InitRooms(10)
 
-	b1, _, err := Join("test", "Foo")
+	b1, r, err := Join("test", "Foo")
 	if err != nil {
 		t.Fatalf("Could not join room: %s", err)
 	}
 
+	b2, _, err := Join("test", "Bar")
+
 	b1.Leave()
+
+	buddies := r.ListBuddies()
+	for _, b := range buddies {
+		if b == "Foo" {
+			t.Error("Foo is still in buddy list, even after leaving")
+		}
+	}
+
+	b2.Leave()
 
 	// The room is now empty. It should no longer exist.
 	if _, ok := rooms["test"]; ok {
