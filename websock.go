@@ -3,6 +3,7 @@ package main
 import (
 	"code.google.com/p/go.net/websocket"
 	"github.com/gorilla/mux"
+	"github.com/kch42/simplechat/chat"
 	"net/http"
 )
 
@@ -25,7 +26,7 @@ func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		buddy, room, err := Join(roomname, nick)
+		buddy, room, err := chat.Join(roomname, nick)
 		if err != nil {
 			send(JoinResponse{
 				OK:    false,

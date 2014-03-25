@@ -1,4 +1,4 @@
-package main
+package chat
 
 import (
 	"errors"
@@ -48,7 +48,15 @@ func (r *Room) ListBuddies() (buddies []string) {
 	return
 }
 
-var rooms = make(map[string]*Room)
+var (
+	rooms   map[string]*Room
+	perroom int
+)
+
+func InitRooms(room_limit int) {
+	rooms = make(map[string]*Room)
+	perroom = room_limit
+}
 
 func Join(room, nick string) (*Buddy, *Room, error) {
 	r, ok := rooms[room]
@@ -61,7 +69,7 @@ func Join(room, nick string) (*Buddy, *Room, error) {
 		return nil, nil, errors.New("Nickname is already in use")
 	}
 
-	if len(r.Buddies) >= *perroom {
+	if len(r.Buddies) >= perroom {
 		return nil, nil, errors.New("Room is full")
 	}
 

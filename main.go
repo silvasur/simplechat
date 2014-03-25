@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/gorilla/mux"
+	"github.com/kch42/simplechat/chat"
 	"log"
 	"math"
 	"net/http"
@@ -25,6 +26,7 @@ func main() {
 	}
 
 	PrepTemplates()
+	chat.InitRooms(*perroom)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", Home)
