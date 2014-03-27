@@ -8,6 +8,12 @@ var (
 	NickAlreadyInUse = errors.New("Nickname is already in use")
 	RoomIsFull       = errors.New("Room is full")
 	EmptyNick        = errors.New("Nickname must not be empty")
+	NickTooLong      = errors.New("NIckname is too long")
+)
+
+const (
+	nickLenLimit = 16
+	msgLenLimit  = 2000
 )
 
 // Room represents a chatroom.
@@ -46,6 +52,12 @@ func (r *Room) leave(nick string) {
 
 func (r *Room) broadcast() {
 	for m := range r.messages {
+		if len(m.Text) > msgLenLimit {
+			text := []rune(m.Text)
+			text = text[:msgLenLimit]
+			m.Text = string(text) + " (message truncated. was too long)"
+		}
+
 		for _, buddy := range r.buddies {
 			buddy.Push(m)
 		}
@@ -85,6 +97,10 @@ func Join(room, nick string) (*Buddy, *Room, error) {
 
 	if nick == "" {
 		return nil, nil, EmptyNick
+	}
+
+	if len(nick) > nickLenLimit {
+		return nil, nil, NickTooLong
 	}
 
 	if len(r.buddies) >= perroom {
