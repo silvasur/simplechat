@@ -8,8 +8,12 @@
 	<link rel="stylesheet" type="text/css" href="/static/style.css" />
 </head>
 <body>
+	
 	<h1>{{.Roomname}}</h1>
-	<ul id="buddies"></ul>
+	<div id="buddiescontainer">
+		<h2>Users online</h2>
+		<ul id="buddies"></ul>
+	</div>
 	<ul id="chatlog"></ul>
 	<div id="chatinput">
 		<input type="text" name="chattext" id="chattext"/>

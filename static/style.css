@@ -19,8 +19,79 @@
 	display: table-cell;
 	padding-right: 1ex;
 	font-weight: bold;
+	text-align: right;
 }
 
 #chatlog li .msg {
 	display: table-cell;
+}
+
+#chatlog li.leave, #chatlog li.join {
+	color: gray !important;
+	font-style: italic !important;
+}
+
+h1 {
+	text-align: center;
+	font-weight: bold;
+	font-size: 18pt;
+	margin: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	border-bottom: 1px solid #28f;
+	height: 8mm;
+	background: white;
+}
+
+#buddiescontainer {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 35mm;
+	margin: 10mm 0 12mm 0;
+}
+
+#buddiescontainer h2 {
+	font-weight: bold;
+	font-size: 12pt;
+}
+
+#buddies {
+	margin: 0;
+	padding: 0;
+}
+#buddies li {
+	margin: 0;
+	padding: 0;
+}
+
+#chatlog {
+	margin: 10mm 40mm 12mm 0;
+}
+
+#chatinput {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 10mm;
+	border-top: 1px solid #28f;
+}
+
+#chatinput input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 20mm;
+	bottom: 0;
+}
+
+#chatinput button {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 8mm;
+	width: calc(100% - 25mm);
 }
