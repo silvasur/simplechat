@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
 	"html/template"
 	"net/http"
 	"path"
@@ -11,7 +12,7 @@ var (
 )
 
 type ChatpageData struct {
-	Websock string
+	Websock, Roomname string
 }
 
 func PrepTemplates() {
@@ -24,5 +25,6 @@ func Home(rw http.ResponseWriter, req *http.Request) {
 }
 
 func Chatpage(rw http.ResponseWriter, req *http.Request) {
-	TplChat.Execute(rw, ChatpageData{"ws://" + req.Host + req.URL.Path + "socket"})
+	vars := mux.Vars(req)
+	TplChat.Execute(rw, ChatpageData{"ws://" + req.Host + req.URL.Path + "socket", vars["chatroom"]})
 }

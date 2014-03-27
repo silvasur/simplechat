@@ -1,0 +1,26 @@
+* {
+	font-family: sans-serif;
+}
+
+#chatlog {
+	display: table;
+	list-style: none;
+	margin: 0;
+	padding: 0
+}
+
+#chatlog li {
+	display: table-row;
+	margin: 0;
+	padding: 0;
+}
+
+#chatlog li .nick {
+	display: table-cell;
+	padding-right: 1ex;
+	font-weight: bold;
+}
+
+#chatlog li .msg {
+	display: table-cell;
+}

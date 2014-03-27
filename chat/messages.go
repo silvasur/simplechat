@@ -26,7 +26,7 @@ func (mt MsgType) String() string {
 	return "???"
 }
 
-func (mt *MsgType) MarshalJSON() ([]byte, error) {
+func (mt MsgType) MarshalJSON() ([]byte, error) {
 	return json.Marshal(mt.String())
 }
 

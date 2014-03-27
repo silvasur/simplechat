@@ -43,11 +43,13 @@ func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 			return
 		}
 
+		exit := make(chan struct{})
+
 		go func() {
 			var s string
 			for {
 				if websocket.Message.Receive(ws, &s) != nil {
-					return
+					break
 				}
 
 				if s == "" {
@@ -56,11 +58,18 @@ func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 
 				buddy.Say(s)
 			}
+
+			exit <- struct{}{}
 		}()
 
-		for m := range buddy.Receive {
-			if send(m) != nil {
+		for {
+			select {
+			case <-exit:
 				return
+			case m := <-buddy.Receive:
+				if send(m) != nil {
+					return
+				}
 			}
 		}
 	}).ServeHTTP(rw, req)

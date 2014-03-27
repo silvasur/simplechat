@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>{{.Roomname}}</title>
+	<script type="text/javascript" src="/static/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/chat.js"></script>
+	<script type="text/javascript">$("document").ready(function(){RunChat("{{.Websock}}");});</script>
+	<link rel="stylesheet" type="text/css" href="/static/style.css" />
 </head>
 <body>
-{{ .Websock }}
+	<h1>{{.Roomname}}</h1>
+	<ul id="buddies"></ul>
+	<ul id="chatlog"></ul>
+	<div id="chatinput">
+		<input type="text" name="chattext" id="chattext"/>
+		<button id="sendbtn">Chat</button>
+	</div>
 </body>
 </html>
