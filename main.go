@@ -31,8 +31,8 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", Home)
 	r.PathPrefix("/static").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir(*staticpath))))
-	r.HandleFunc("/chat/{chatroom}/", Chatpage)
-	r.HandleFunc("/chat/{chatroom}/socket", AcceptWebSock)
+	r.HandleFunc("/chat/{chatroom:.+}/", Chatpage)
+	r.HandleFunc("/chat/{chatroom:.+}/socket", AcceptWebSock)
 	http.Handle("/", r)
 	http.ListenAndServe(*laddr, nil)
 }
