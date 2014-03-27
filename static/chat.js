@@ -1,8 +1,17 @@
+function randomColor() {
+	var h = Math.floor(Math.random() * 360);
+	var s = Math.floor((Math.random() * 0.5 + 0.5)*100);
+	var l = Math.floor((Math.random() * 0.4 + 0.3)*100);
+	return "hsl("+h+", "+s+"%, "+l+"%)";
+}
+
 function askTryAgain(reason, ws_url) {
 	if(confirm("Could not join chat (Reason: "+ reason +"). Try again?")) {
 		window.setTimeout(RunChat, 1, ws_url); // We use a timeout, so we don't accidentally fill up the call stack.
 	}
 }
+
+var buddyColors = {};
 
 function addBuddy(nick) {
 	var found = false;
@@ -12,7 +21,10 @@ function addBuddy(nick) {
 		}
 	});
 	if(!found) {
-		$("#buddies").append($("<li/>").text(nick));
+		var col = randomColor();
+		buddyColors[nick] = col;
+		console.log(col);
+		$("#buddies").append($("<li/>").css("color", col).text(nick));
 	}
 }
 
@@ -42,7 +54,7 @@ function chatlogWriter(event) {
 		break;
 	}
 	
-	var elemNick = $("<span/>").addClass("nick").text(data.user);
+	var elemNick = $("<span/>").addClass("nick").prop("style", "color: " + buddyColors[data.user]).text(data.user);
 	var elemText = $("<span/>").addClass("msg").text(msgtext);
 	var logentry = $("<li/>").addClass(data.type).append(elemNick).append(elemText);
 	$("#chatlog").append(logentry);
