@@ -23,7 +23,6 @@ function addBuddy(nick) {
 	if(!found) {
 		var col = randomColor();
 		buddyColors[nick] = col;
-		console.log(col);
 		$("#buddies").append($("<li/>").css("color", col).text(nick));
 	}
 }
@@ -54,7 +53,7 @@ function chatlogWriter(event) {
 		break;
 	}
 	
-	var elemNick = $("<span/>").addClass("nick").prop("style", "color: " + buddyColors[data.user]).text(data.user);
+	var elemNick = $("<span/>").addClass("nick").css("color", buddyColors[data.user]).text(data.user);
 	var elemText = $("<span/>").addClass("msg").text(msgtext);
 	var logentry = $("<li/>").addClass(data.type).append(elemNick).append(elemText);
 	$("#chatlog").append(logentry);
