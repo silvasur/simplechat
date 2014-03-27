@@ -26,7 +26,7 @@
 	display: table-cell;
 }
 
-#chatlog li.leave, #chatlog li.join {
+#chatlog li.leave, #chatlog li.join, #chatlog li.leave .nick, #chatlog li.join .nick {
 	color: gray !important;
 	font-style: italic !important;
 }
