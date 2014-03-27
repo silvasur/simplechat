@@ -7,6 +7,7 @@ import (
 var (
 	NickAlreadyInUse = errors.New("Nickname is already in use")
 	RoomIsFull       = errors.New("Room is full")
+	EmptyNick        = errors.New("Nickname must not be empty")
 )
 
 // Room represents a chatroom.
@@ -31,6 +32,7 @@ func (r *Room) leave(nick string) {
 	}
 
 	delete(r.buddies, nick)
+
 	if len(r.buddies) == 0 {
 		close(r.messages)
 		delete(rooms, r.name)
@@ -79,6 +81,10 @@ func Join(room, nick string) (*Buddy, *Room, error) {
 
 	if _, there := r.buddies[nick]; there {
 		return nil, nil, NickAlreadyInUse
+	}
+
+	if nick == "" {
+		return nil, nil, EmptyNick
 	}
 
 	if len(r.buddies) >= perroom {

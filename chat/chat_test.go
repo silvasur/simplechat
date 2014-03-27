@@ -18,6 +18,10 @@ func TestJoining(t *testing.T) {
 		t.Fatalf("Got error \"%s\", expected \"%s\"", err, NickAlreadyInUse)
 	}
 
+	if _, _, err = Join("test", ""); err != EmptyNick {
+		t.Fatalf("Got error \"%s\", expected \"%s\"", err, EmptyNick)
+	}
+
 	b2, r2, err := Join("test", "Bar")
 	if err != nil {
 		t.Fatalf("Could not join room a second time: %s", err)
