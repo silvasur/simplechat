@@ -82,16 +82,16 @@ h1 {
 
 #chatinput input {
 	position: absolute;
-	top: 0;
-	left: 0;
-	right: 20mm;
-	bottom: 0;
-}
-
-#chatinput button {
-	position: absolute;
 	top: 0px;
 	left: 0px;
 	height: 8mm;
 	width: calc(100% - 25mm);
+}
+
+#chatinput button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 20mm;
+	bottom: 0;
 }
