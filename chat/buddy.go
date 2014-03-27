@@ -28,9 +28,11 @@ func (b *Buddy) Leave() {
 // Push pushes a message to the buddies Receive channel
 func (b *Buddy) Push(msg Message) {
 	go func() {
+		t := time.NewTicker(time.Millisecond * 100)
+		defer t.Stop()
 		select {
 		case b.Receive <- msg:
-		case <-time.Tick(time.Millisecond * 100):
+		case <-t.C:
 		}
 	}()
 }
