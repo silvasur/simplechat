@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/kch42/simplechat/chat"
 	"net/http"
+	"time"
 )
 
 type JoinResponse struct {
@@ -12,6 +13,11 @@ type JoinResponse struct {
 	Error   string   `json:"error,omitempty"`
 	Buddies []string `json:"buddies,omitempty"`
 }
+
+const (
+	floodstopReset = 1 * time.Second
+	floodstopMax   = 3
+)
 
 func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
@@ -45,10 +51,18 @@ func AcceptWebSock(rw http.ResponseWriter, req *http.Request) {
 
 		exit := make(chan struct{})
 
+		floodstop := NewFloodstop(floodstopReset, floodstopMax)
+		defer floodstop.Stop()
+
 		go func() {
 			var s string
 			for {
 				if websocket.Message.Receive(ws, &s) != nil {
+					break
+				}
+
+				if !floodstop.Ask() {
+					// User sent too many requests in a short amount of time. Kick them!
 					break
 				}
 
