@@ -1,0 +1,38 @@
+* {
+	font-family: sans-serif;
+}
+
+code {
+	font-family: monospace;
+}
+
+code strong {
+	font-family: monospace;
+	font-weight: bold;
+}
+
+body {
+	background: hsl(200, 90%, 85%);
+}
+
+section {
+	background: white;
+	width: 80%;
+	min-width: 50mm;
+	margin: 5mm auto 5mm;
+	padding: 4mm 0 4mm;
+	border-radius: 4mm;
+}
+
+section div.content {
+	padding: 0 4mm;
+}
+
+h1, h2 {
+	margin: 0 0 2mm;
+	padding: 2mm 4mm 2mm;
+	border-bottom: 1px dotted hsl(200, 90%, 85%);
+	font-weight: normal;
+	font-size: 18pt;
+	text-align: center;
+}

@@ -1,9 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>simplechat</title>
+	<link rel="stylesheet" type="text/css" href="/static/home.css">
 </head>
 <body>
-Test
+	
+	<section>
+		<h1>simplechat</h1>
+		
+		<div class="content">
+			<p>simplechat allows you to start a chatroom instantly. No need to register an account or any special programs. A modern webbrowser is enough.</p>
+		</div>
+	</section>
+	
+	<section>
+		<h2>How to start a new chat</h2>
+		
+		<div class="content">
+			<p>Simple! Just append <code>/chat/<strong>roomname</strong></code> to the current URL and you will get a chatroom called <code>roomname</code>. Replace <code>roomname</code> with an arbitrary text.</p>
+			<p>Or use <a href="/chat/{{.RandomChat}}">this random chatroom</a>.</p>
+			<p>To invite other people to your new shiny chatroom, just send them the URL.</p>
+		</div>
+	</section>
+	
+	<section>
+		<h2>Throwaway chatrooms</h2>
+		
+		<div class="content">
+			<p>All created chatrooms are throwaway chatrooms. When the last one leaves the room, it will be gone until someone visits the chat again.</p>
+			<p>Nothing in the chat will be stored permanently on our servers.</p>
+			<p><strong>NOTE:</strong> Keep in mind that this service does <em>not</em> use encryption. So please, don't share sensible data that might get you into trouble, there are much better tools for that (XMPP+OTR or GPG, for example).</p>
+		</div>
+	</section>
 </body>
 </html>
