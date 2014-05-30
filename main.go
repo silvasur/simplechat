@@ -6,7 +6,9 @@ import (
 	"github.com/kch42/simplechat/chat"
 	"log"
 	"math"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 var (
@@ -17,6 +19,8 @@ var (
 )
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
 	flag.Parse()
 
 	if *perroom < 0 {
