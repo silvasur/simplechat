@@ -2,11 +2,137 @@
 	font-family: sans-serif;
 }
 
+body {
+	background: hsl(200, 90%, 85%);
+}
+
+#mainwrap {
+	position: fixed;
+	left: 2mm;
+	top: 2mm;
+	right: 2mm;
+	bottom: 2mm;
+}
+
+h1, #chatlogwrap, #buddiescontainer {
+	background: white;
+}
+
+#dialogoverlay {
+	position: fixed;
+	background: rgba(0,0,0,0.4);
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1000;
+}
+
+#dialoginner {
+	background: white;
+	margin: 10% auto 0;
+	width: 90%;
+	max-width: 120mm;
+	padding: 4mm 0 4mm;
+	border-radius: 4mm;
+}
+
+#dialoginner > div {
+	padding: 0 4mm 0;
+}
+
+#dialoginner .buttons {
+	margin: 1ex 0 0;
+	text-align: center;
+}
+
+#dialoginner button {
+	padding: 1ex 2ex 1ex;
+	background: #ddd;
+	border: none;
+	border-radius: 2mm;
+}
+
+#dialoginner button:hover {
+	cursor: pointer;
+	background: #eee;
+}
+#dialoginner input {
+	width: calc(100% - 2px);
+	border: 1px solid #aaa;
+}
+
+#dialoginner h2 {
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	border-bottom: 1px dotted hsl(200, 90%, 85%);
+	font-size: 16pt;
+	font-weight: normal;
+}
+
+#chatinput {
+	padding: 0;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#chatinput input {
+	position: relative;
+	background: white;
+	border: none;
+	border-top-left-radius: 4mm;
+	border-bottom-left-radius: 4mm;
+	padding: 0 0 0 4mm;
+	height: 3em;
+	width: calc(100% - 4mm - 10ex);
+}
+#chatinput button {
+	position: relative;
+	background: white;
+	border-top-right-radius: 4mm;
+	border-bottom-right-radius: 4mm;
+	border: none;
+	border-left: 1px dotted hsl(200, 90%, 85%);
+	height: 3em;
+	text-align: center;
+	width: 10ex;
+}
+#chatinput button:hover {
+	background: #eee;
+	cursor: pointer;
+}
+
+::-webkit-input-placeholder { font-style: italic; }
+::-moz-placeholder { font-style: italic; }
+:-ms-input-placeholder { font-style: italic; }
+input:-moz-placeholder { font-style: italic; }
+
+#chatlogwrap {
+	position: absolute;
+	top: 13mm;
+	left: 0;
+	bottom: calc(3em + 1mm);
+	right: 40mm;
+	margin: 0;
+	border-radius: 4mm;
+}
+
 #chatlog {
+	position: absolute;
+	margin: 0;
+	padding: 0;
 	display: table;
 	list-style: none;
-	margin: 0;
-	padding: 0
+	display: block;
+	top: 4mm;
+	left: 4mm;
+	right: 4mm;
+	bottom: 4mm;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #chatlog li {
@@ -17,13 +143,13 @@
 
 #chatlog li .nick {
 	display: table-cell;
-	padding-right: 1ex;
+	padding-right: 0.5ex;
 	font-weight: bold;
-	text-align: right;
 }
 
 #chatlog li .msg {
 	display: table-cell;
+	padding-left: 1ex;
 }
 
 #chatlog li.leave, #chatlog li.join, #chatlog li.leave .nick, #chatlog li.join .nick {
@@ -32,66 +158,40 @@
 }
 
 h1 {
+	border-radius: 4mm;
 	text-align: center;
-	font-weight: bold;
+	margin: 0 0 1mm;
+	padding: 2mm 4mm 2mm;
+	font-weight: normal;
 	font-size: 18pt;
-	margin: 0;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	border-bottom: 1px solid #28f;
 	height: 8mm;
-	background: white;
 }
 
 #buddiescontainer {
-	position: fixed;
-	top: 0;
+	position: absolute;
+	top: 13mm;
+	bottom: calc(3em + 1mm);
 	right: 0;
-	width: 35mm;
-	margin: 10mm 0 12mm 0;
+	width: 39mm;
+	border-radius: 4mm;
+	padding: 4mm 0 4mm;
 }
 
 #buddiescontainer h2 {
-	font-weight: bold;
+	font-weight: normal;
 	font-size: 12pt;
+	padding: 0 4mm 0;
+	margin: 0 0 2mm;
+	text-align: center;
+	border-bottom: 1px dotted hsl(200, 90%, 85%);
 }
 
 #buddies {
+	list-style: none;
 	margin: 0;
-	padding: 0;
+	padding: 0 4mm 0;
 }
 #buddies li {
 	margin: 0;
 	padding: 0;
-}
-
-#chatlog {
-	margin: 10mm 40mm 12mm 0;
-}
-
-#chatinput {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 10mm;
-	border-top: 1px solid #28f;
-}
-
-#chatinput input {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	height: 8mm;
-	width: calc(100% - 25mm);
-}
-
-#chatinput button {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 20mm;
-	bottom: 0;
 }

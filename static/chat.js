@@ -1,3 +1,55 @@
+function initGui(roomname) {
+	$("#nojs").remove();
+	
+	var dialogoverlay = $("<div/>").prop("id", "dialogoverlay")
+		.append($("<div/>").prop("id", "dialoginner")
+			.append($("<h2/>"))
+			.append($("<div/>")
+				.append($("<p/>"))
+				.append($("<input/>"))
+				.append($("<div/>").addClass("buttons")))).hide();
+	var h1 = $("<h1/>").text("Chatroom ").append($("<span/>").css("font-style", "italic").text(roomname));
+	var chatlog = $("<div/>").prop("id", "chatlogwrap").append($("<ul/>").prop("id", "chatlog"));
+	var buddiescontainer = $("<section/>").prop("id", "buddiescontainer")
+		.append($("<h2/>").text("Buddies online"))
+		.append($("<ul/>").prop("id", "buddies"));
+	var chatinput = $("<section/>").prop("id", "chatinput")
+		.append($("<input/>").prop("name", "chattext").prop("id", "chattext").prop("type", "text").prop("placeholder", "Type to chat..."))
+		.append($("<button/>").prop("id", "sendbtn").text("Send"));
+	$("body").append(dialogoverlay);
+	$("#mainwrap")
+		.append(h1)
+		.append(chatlog)
+		.append(buddiescontainer)
+		.append(chatinput);
+}
+
+function mydialog(title, text, input, buttons) {
+	$("#dialoginner h2").text(title);
+	$("#dialoginner p").text(text);
+	var callcallback;
+	if(input === null) {
+		$("#dialoginner input").hide();
+		callcallback = function(cb) {cb();};
+	} else {
+		$("#dialoginner input").prop("placeholder", input).show();
+		callcallback = function(cb) {cb($("#dialoginner input").val());};
+	}
+	
+	$("#dialoginner .buttons > *").remove();
+	var btncontainer = $("#dialoginner .buttons");
+	
+	for(var i in buttons) {
+		var button = buttons[i];
+		btncontainer.append($("<button/>").text(button.text).click(function() {
+			$("#dialogoverlay").hide();
+			callcallback(button.callback);
+		}));
+	}
+	
+	$("#dialogoverlay").show();
+}
+
 function randomColor() {
 	var h = Math.floor(Math.random() * 360);
 	var s = Math.floor((Math.random() * 0.5 + 0.5)*100);
@@ -6,9 +58,17 @@ function randomColor() {
 }
 
 function askTryAgain(reason, ws_url) {
-	if(confirm("Could not join chat (Reason: "+ reason +"). Try again?")) {
-		window.setTimeout(RunChat, 1, ws_url); // We use a timeout, so we don't accidentally fill up the call stack.
-	}
+	mydialog(
+		"Could not join",
+		"Could not Join chat (Reason: "+reason+")",
+		null,
+		[{
+			"text": "Try again",
+			"callback": (function() {
+				pickUsername(ws_url);
+			})
+		}]
+	);
 }
 
 var buddyColors = {};
@@ -57,14 +117,14 @@ function chatlogWriter(event) {
 	var elemText = $("<span/>").addClass("msg").text(msgtext);
 	var logentry = $("<li/>").addClass(data.type).append(elemNick).append(elemText);
 	$("#chatlog").append(logentry);
-	window.scrollTo(0, logentry.offset().top);
+	logentry.get()[0].scrollIntoView();
 }
 
 function initChatSender(ws) {
 	var send = function() {
 		var ct = $("#chattext")
-		ws.send(ct.prop("value"));
-		ct.prop("value","");
+		ws.send(ct.val());
+		ct.val("");
 		ct.focus();
 	};
 	
@@ -83,13 +143,14 @@ function Join(ws_url, nick) {
 		ws.onmessage = function(event) {
 			var data = JSON.parse(event.data);
 			if(data.ok) {
+				$("#chatinput").show();
 				ws.onmessage = chatlogWriter;
-				for(i in data.buddies) {
+				for(var i in data.buddies) {
 					addBuddy(data.buddies[i]);
 				}
 				initChatSender(ws);
 				ws.onclose = function(_) {
-					alert("Connection lost. Try refreshing the page.");
+					mydialog("Connection lost", "Connection to server lost. Try refreshing the page", null, []);
 				};
 			} else {
 				ws.close();
@@ -99,13 +160,19 @@ function Join(ws_url, nick) {
 	};
 }
 
-function RunChat(ws_url) {
-	var nick = "";
-	while(nick == "") {
-		nick = prompt("Choose a nickname");
-		if(nick === null) {
-			return;
-		}
-	}
-	Join(ws_url, nick);
+function RunChat(ws_url, roomname) {
+	initGui(roomname);
+	pickUsername(ws_url);
+}
+
+function pickUsername(ws_url) {
+	mydialog(
+		"Pick a username",
+		"Pick a username to join the chat",
+		"username",
+		[{
+			"text": "OK",
+			"callback": (function(nick) {Join(ws_url, nick);})
+		}]
+	);
 }

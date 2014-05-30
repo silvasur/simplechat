@@ -4,20 +4,10 @@
 	<title>{{.Roomname}}</title>
 	<script type="text/javascript" src="/static/jquery.min.js"></script>
 	<script type="text/javascript" src="/static/chat.js"></script>
-	<script type="text/javascript">$("document").ready(function(){RunChat("{{.Websock}}");});</script>
+	<script type="text/javascript">$("document").ready(function(){RunChat("{{.Websock}}", "{{.Roomname}}");});</script>
 	<link rel="stylesheet" type="text/css" href="/static/chat.css" />
 </head>
 <body>
-	
-	<h1>{{.Roomname}}</h1>
-	<div id="buddiescontainer">
-		<h2>Users online</h2>
-		<ul id="buddies"></ul>
-	</div>
-	<ul id="chatlog"></ul>
-	<div id="chatinput">
-		<input type="text" name="chattext" id="chattext"/>
-		<button id="sendbtn">Chat</button>
-	</div>
+	<div id="mainwrap"><section id="nojs">simplechat needs javascript to work. If you can see this message, you probably have javascript disabled. Please activate it for this site.</section></div>
 </body>
 </html>
