@@ -8,6 +8,10 @@ A simple websocket-based chatserver written in Go.
 
 You will also need the [jQuery](http://jquery.com) library. Download the minified version from <http://jquery.com/download/> and save it as `static/jquery.min.js`
 
+## Screenshot
+
+![Screenshot](http://kch42.de/cg/81e9bd66.png)
+
 ## You are also free to use my public installation
 
 [chat.kch42.net](http://chat.kch42.net)
