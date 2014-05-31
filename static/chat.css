@@ -58,8 +58,14 @@ h1, #chatlogwrap, #buddiescontainer {
 	background: #eee;
 }
 #dialoginner input {
-	width: calc(100% - 2px);
-	border: 1px solid #aaa;
+	width: calc(100% - 4mm);
+	border: none;
+	background: #ddd;
+	padding: 2mm;
+	border-radius: 4mm;
+}
+#dialoginner input:hover, #dialoginner input:focus {
+	background: #eee;
 }
 
 #dialoginner h2 {
