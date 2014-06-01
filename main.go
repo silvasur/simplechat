@@ -16,6 +16,9 @@ var (
 	tplpath    = flag.String("tplpath", "tpls", "Path to templates")
 	staticpath = flag.String("staticpath", "static", "Path to static page elements")
 	perroom    = flag.Int("perroom", -1, "Maximum amount of users per room (negative for unlimited)")
+	usetls     = flag.Bool("tls", false, "Should TLS be used?")
+	certfile   = flag.String("tlscert", "", "TLS certificate file")
+	keyfile    = flag.String("tlskey", "", "TLS key file")
 )
 
 func main() {
@@ -39,5 +42,19 @@ func main() {
 	r.HandleFunc("/chat/{chatroom:.+}/", Chatpage)
 	r.HandleFunc("/chat/{chatroom:.+}", Chatpage)
 	http.Handle("/", r)
-	http.ListenAndServe(*laddr, nil)
+
+	var listenServe func() error
+	if *usetls {
+		listenServe = func() error {
+			return http.ListenAndServeTLS(*laddr, *certfile, *keyfile, nil)
+		}
+	} else {
+		listenServe = func() error {
+			return http.ListenAndServe(*laddr, nil)
+		}
+	}
+
+	if err := listenServe(); err != nil {
+		log.Fatal(err)
+	}
 }

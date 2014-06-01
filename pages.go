@@ -44,5 +44,9 @@ func Home(rw http.ResponseWriter, req *http.Request) {
 
 func Chatpage(rw http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
-	TplChat.Execute(rw, ChatpageData{"ws://" + req.Host + strings.Replace(req.URL.Path+"/socket", "//", "/", -1), vars["chatroom"]})
+	wsproto := "ws://"
+	if *usetls {
+		wsproto = "wss://"
+	}
+	TplChat.Execute(rw, ChatpageData{wsproto + req.Host + strings.Replace(req.URL.Path+"/socket", "//", "/", -1), vars["chatroom"]})
 }
