@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/gorilla/mux"
-	"github.com/kch42/simplechat/chat"
+	"github.com/silvasur/simplechat/chat"
 	"log"
 	"math"
 	"math/rand"

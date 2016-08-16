@@ -3,7 +3,7 @@ package main
 import (
 	"code.google.com/p/go.net/websocket"
 	"github.com/gorilla/mux"
-	"github.com/kch42/simplechat/chat"
+	"github.com/silvasur/simplechat/chat"
 	"net/http"
 	"time"
 )

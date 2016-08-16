@@ -4,14 +4,14 @@ A simple websocket-based chatserver written in Go.
 
 ## Installation
 
-`go get github.com/kch42/simplechat`
+`go get github.com/silvasur/simplechat`
 
 You will also need the [jQuery](http://jquery.com) library. Download the minified version from <http://jquery.com/download/> and save it as `static/jquery.min.js`
 
 ## Screenshot
 
-![Screenshot](http://kch42.de/cg/81e9bd66.png)
+![Screenshot](http://hi-im.laria.me/cg/81e9bd66.png)
 
 ## You are also free to use my public installation
 
-[chat.kch42.net](http://chat.kch42.net)
+[chat.silvasur.net](http://chat.silvasur.net)
