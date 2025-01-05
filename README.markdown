@@ -12,6 +12,3 @@ You will also need the [jQuery](http://jquery.com) library. Download the minifie
 
 ![Screenshot](http://hi-im.laria.me/cg/81e9bd66.png)
 
-## You are also free to use my public installation
-
-[chat.silvasur.net](http://chat.silvasur.net)
